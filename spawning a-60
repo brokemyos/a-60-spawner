@@ -1,0 +1,112 @@
+local Creator = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors%20Entity%20Spawner/Source.lua"))()
+ 
+-- Create entity
+local entity = Creator.createEntity({
+    CustomName = "A-60", -- Custom name of your entity
+    Model = "rbxassetid://11396762463", -- Can be GitHub file or rbxassetid
+    Speed = 200, -- Percentage, 100 = default Rush speed
+    DelayTime = 2, -- Time before starting cycles (seconds)
+    HeightOffset = 0,
+    CanKill = true,
+    KillRange = 40,
+    BreakLights = true,
+    BackwardsMovement = false,
+    FlickerLights = {
+        true, -- Enabled/Disabled
+        2, -- Time (seconds)
+    },
+    Cycles = {
+        Min = 1,
+        Max = 4,
+        WaitTime = 2,
+    },
+    CamShake = {
+        true, -- Enabled/Disabled
+        {30, 30, 0.1, 1}, -- Shake values (don't change if you don't know)
+        50, -- Shake start distance (from Entity to you)
+    },
+    Jumpscare = {
+        true, -- Enabled/Disabled
+        {
+            Image1 = "rbxassetid://11394048190", -- Image1 url
+            Image2 = "rbxassetid://11394048190", -- Image2 url
+            Shake = true,
+            Sound1 = {
+                10483790459, -- SoundId
+                { Volume = 0.5 }, -- Sound properties
+            },
+            Sound2 = {
+                10483837590, -- SoundId
+                { Volume = 0.5 }, -- Sound properties
+            },
+            Flashing = {
+                true, -- Enabled/Disabled
+                Color3.fromRGB(255, 255, 255), -- Color
+            },
+            Tease = {
+                false, -- Enabled/Disabled
+                Min = 1,
+                Max = 1,
+            },
+        },
+    },
+    CustomDialog = {"I can't tell who you died to", "Basically just get in the closet quickly if there is a flickering light", "Entity:unknown210532", ".........."}, -- Custom death message
+})
+ 
+-----[[ Advanced ]]-----
+          entity.Debug.OnEntitySpawned = function(entityModel)
+ 
+          end
+ 
+          entity.Debug.OnEntityDespawned = function(entityModel)
+		      if getgenv().death == false then
+              getgenv().Title = "Out of many Rebounds" --Title Here
+              getgenv().Description = "Might Come back or not" --Description Here
+              getgenv().Reason = "Encounter and survive the rare Entity called A-60" --Reason Here
+              getgenv().BadgeId = 2129181688 --Replace Number with Your Badge ID
+              getgenv().Category = 10 --You can replace the Category or dont
+ 
+              local Unlock = require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Lobby.RemoteListener.Modules.AchievementUnlock)
+              local Achievements = debug.getupvalue(Unlock, 1)
+              for i,v in pairs(require(game:GetService("ReplicatedStorage").Achievements)) do
+                  v.Title = getgenv().Title
+                  v.Desc = getgenv().Description
+                  v.Reason = getgenv().Reason
+                  v.BadgeId = getgenv().BadgeId
+                  v.Category = getgenv().Category
+              end
+              Unlock(nil,"Join")
+			  end
+          end
+ 
+          entity.Debug.OnEntityStartMoving = function(entityModel)
+ 
+          end
+ 
+          entity.Debug.OnEntityFinishedRebound = function(entityModel)
+ 
+          end
+ 
+          entity.Debug.OnDeath = function()
+		  getgenv().death = true
+              getgenv().Title = "Out of many Rebounds" --Title Here
+              getgenv().Description = "Might Come back and did" --Description Here
+              getgenv().Reason = "Encounter and dont survive the rare Entity called A-60" --Reason Here
+              getgenv().BadgeId = 2129181688 --Replace Number with Your Badge ID
+              getgenv().Category = 10 --You can replace the Category or dont
+ 
+              local Unlock = require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Lobby.RemoteListener.Modules.AchievementUnlock)
+              local Achievements = debug.getupvalue(Unlock, 1)
+              for i,v in pairs(require(game:GetService("ReplicatedStorage").Achievements)) do
+                  v.Title = getgenv().Title
+                  v.Desc = getgenv().Description
+                  v.Reason = getgenv().Reason
+                  v.BadgeId = getgenv().BadgeId
+                  v.Category = getgenv().Category
+              end
+              Unlock(nil,"Join")
+          end
+          ---------------------------
+ 
+          -- Run the created entity
+          Creator.runEntity(entity)
